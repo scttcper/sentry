@@ -6,7 +6,7 @@ import Access from 'app/components/acl/access';
 import Button from 'app/components/button';
 import Confirm from 'app/components/confirm';
 import Alert from 'app/components/alert';
-import {IconDelete} from 'app/icons/iconDelete';
+import IconDelete from 'app/icons/iconDelete';
 import ProjectBadge from 'app/components/idBadge/projectBadge';
 import withApi from 'app/utils/withApi';
 import {Client} from 'app/api';

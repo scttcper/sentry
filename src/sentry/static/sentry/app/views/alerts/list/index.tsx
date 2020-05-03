@@ -281,7 +281,7 @@ class IncidentsListContainer extends React.Component<Props> {
                       priority="primary"
                       href="#"
                       size="small"
-                      icon={<IconAdd circle size="xs" />}
+                      icon={<IconAdd isCircle size="xs" />}
                     >
                       {t('Add Alert Rule')}
                     </Button>

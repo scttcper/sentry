@@ -8,7 +8,7 @@ import AddIntegrationButton from 'app/views/organizationIntegrations/addIntegrat
 import Alert from 'app/components/alert';
 import Button from 'app/components/button';
 import Confirm from 'app/components/confirm';
-import {IconDelete} from 'app/icons/iconDelete';
+import IconDelete from 'app/icons/iconDelete';
 import IntegrationItem from 'app/views/organizationIntegrations/integrationItem';
 import Tooltip from 'app/components/tooltip';
 import {IntegrationProvider, Integration, Organization} from 'app/types';

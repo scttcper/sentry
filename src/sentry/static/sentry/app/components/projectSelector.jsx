@@ -23,7 +23,7 @@ import SentryTypes from 'app/sentryTypes';
 import space from 'app/styles/space';
 import theme from 'app/utils/theme';
 import withProjects from 'app/utils/withProjects';
-import {IconAdd} from 'app/icons/iconAdd';
+import IconAdd from 'app/icons/iconAdd';
 
 const renderDisabledCheckbox = p => (
   <Hovercard
@@ -297,7 +297,7 @@ class ProjectSelector extends React.Component {
             disabled={!hasProjectWrite}
             to={`/organizations/${org.slug}/projects/new/`}
             size="xsmall"
-            icon={<IconAdd size="xs" circle />}
+            icon={<IconAdd size="xs" isCircle />}
             title={
               hasProjectWrite ? null : t("You don't have permission to add a project")
             }

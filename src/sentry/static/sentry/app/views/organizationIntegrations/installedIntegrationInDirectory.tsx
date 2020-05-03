@@ -6,7 +6,7 @@ import Access from 'app/components/acl/access';
 import Alert from 'app/components/alert';
 import Button from 'app/components/button';
 import Confirm from 'app/components/confirm';
-import {IconDelete} from 'app/icons/iconDelete';
+import {IconDelete, IconWarning} from 'app/icons';
 import IntegrationItem from 'app/views/organizationIntegrations/integrationItem';
 import Tooltip from 'app/components/tooltip';
 import {IntegrationProvider, Integration, Organization, ObjectStatus} from 'app/types';
@@ -14,7 +14,6 @@ import {SingleIntegrationEvent} from 'app/utils/integrationUtil';
 import CircleIndicator from 'app/components/circleIndicator';
 import theme from 'app/utils/theme';
 import space from 'app/styles/space';
-import {IconWarning} from 'app/icons';
 
 const CONFIGURABLE_FEATURES = ['commits', 'alert-rule'];
 

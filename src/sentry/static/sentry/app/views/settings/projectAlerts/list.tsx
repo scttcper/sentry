@@ -2,7 +2,7 @@ import {RouteComponentProps} from 'react-router/lib/Router';
 import React from 'react';
 import styled from '@emotion/styled';
 
-import {IconAdd} from 'app/icons';
+import IconAdd from 'app/icons/iconAdd';
 import {IssueAlertRule} from 'app/types/alerts';
 import {Organization} from 'app/types';
 import {PanelTable} from 'app/components/panels';
@@ -101,7 +101,7 @@ class ProjectAlertRules extends AsyncView<Props, State> {
                     disabled={!canEditRule}
                     priority="primary"
                     size="small"
-                    icon={<IconAdd size="xs" circle />}
+                    icon={<IconAdd size="xs" isCircle />}
                   >
                     {t('New Alert Rule')}
                   </Button>

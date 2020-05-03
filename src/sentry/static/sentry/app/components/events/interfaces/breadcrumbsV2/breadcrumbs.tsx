@@ -8,7 +8,6 @@ import {t} from 'app/locale';
 import {Event} from 'app/types';
 import space from 'app/styles/space';
 import SearchBar from 'app/components/searchBar';
-import {IconProps} from 'app/types/iconProps';
 
 import {PlatformContextProvider} from '../breadcrumbs/platformContext';
 import BreadcrumbTime from '../breadcrumbs/breadcrumbTime';
@@ -18,6 +17,7 @@ import {
   BreadcrumbDetails,
   BreadcrumbType,
   BreadcrumbLevel,
+  IconProps,
 } from '../breadcrumbs/types';
 import BreadcrumbFilter from './breadcrumbFilter/breadcrumbFilter';
 import convertBreadcrumbType from './convertBreadcrumbType';
