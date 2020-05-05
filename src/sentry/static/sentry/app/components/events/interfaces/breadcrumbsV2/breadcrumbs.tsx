@@ -72,14 +72,22 @@ class BreadcrumbsContainer extends React.Component<Props, State> {
 
     const breadcrumbTypes: BreadcrumbFilterGroups = [];
 
-    // TODO(Priscila): implement levels
-    //const breadcrumbLevels: BreadcrumbFilterGroups = [];
+    const breadcrumbLevels: BreadcrumbFilterGroups = [];
 
     const convertedBreadcrumbs = breadcrumbs.map((breadcrumb, index) => {
       const convertedBreadcrumb = convertBreadcrumbType(breadcrumb);
       const breadcrumbDetails = getBreadcrumbDetails(convertedBreadcrumb.type);
 
       if (!breadcrumbTypes.find(b => b.type === convertedBreadcrumb.type)) {
+        !breadcrumbTypes.push({
+          groupType: FilterGroupType.TYPE,
+          type: convertedBreadcrumb.type,
+          ...breadcrumbDetails,
+          isChecked: true,
+        });
+      }
+
+      if (!breadcrumbLevels.find(b => b.type === convertedBreadcrumb.type)) {
         !breadcrumbTypes.push({
           groupType: FilterGroupType.TYPE,
           type: convertedBreadcrumb.type,
@@ -99,12 +107,15 @@ class BreadcrumbsContainer extends React.Component<Props, State> {
       breadcrumbs: convertedBreadcrumbs,
       filteredBreadcrumbs: convertedBreadcrumbs,
       filteredBreadcrumbsByCustomSearch: convertedBreadcrumbs,
-      breadcrumbFilterGroups: breadcrumbTypes
-        // in case of a breadcrumb of type BreadcrumbType.DEFAULT, moves it to the last position of the array
-        .filter(crumbType => crumbType.type !== BreadcrumbType.DEFAULT)
-        .concat(
-          breadcrumbTypes.filter(crumbType => crumbType.type === BreadcrumbType.DEFAULT)
-        ),
+      breadcrumbFilterGroups: [
+        ...breadcrumbTypes
+          // in case of a breadcrumb of type BreadcrumbType.DEFAULT, moves it to the last position of the array
+          .filter(crumbType => crumbType.type !== BreadcrumbType.DEFAULT)
+          .concat(
+            breadcrumbTypes.filter(crumbType => crumbType.type === BreadcrumbType.DEFAULT)
+          ),
+        ...breadcrumbLevels,
+      ],
     });
   };
 
