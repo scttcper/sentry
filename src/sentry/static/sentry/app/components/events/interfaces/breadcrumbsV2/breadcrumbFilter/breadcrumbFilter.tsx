@@ -123,7 +123,7 @@ class BreadcrumbFilter extends React.Component<Props, State> {
 
     return (
       <Wrapper>
-        <DropdownControl menuWidth="20vh" blendWithActor button={this.getDropDownButton}>
+        <DropdownControl menuWidth="25vh" blendWithActor button={this.getDropDownButton}>
           <React.Fragment>
             <BreadcrumbFilterHeader
               onSelectAll={this.handleSelectAll}
