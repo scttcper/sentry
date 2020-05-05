@@ -4,27 +4,39 @@ import Tag from 'app/views/settings/components/tag';
 
 import {BreadcrumbLevelType} from '../breadcrumbs/types';
 
-type Props = {
+type Props = Pick<Tag, 'size'> & {
   level?: BreadcrumbLevelType;
 };
 
-const BreadcrumbLevelTag = ({level}: Props) => {
+const BreadcrumbLevelTag = ({level, size}: Props) => {
   switch (level) {
     case BreadcrumbLevelType.FATAL:
     case BreadcrumbLevelType.ERROR:
-      return <Tag priority="error">{level}</Tag>;
+      return (
+        <Tag priority="error" size={size}>
+          {level}
+        </Tag>
+      );
     case BreadcrumbLevelType.INFO:
-      return <Tag priority="info">{level}</Tag>;
+      return (
+        <Tag priority="info" size={size}>
+          {level}
+        </Tag>
+      );
     case BreadcrumbLevelType.WARNING:
-      return <Tag priority="warning">{level}</Tag>;
+      return (
+        <Tag priority="warning" size={size}>
+          {level}
+        </Tag>
+      );
     default:
-      return <Tag>{level}</Tag>;
+      return <Tag size={size}>{level}</Tag>;
   }
 };
 
-const BreadcrumbLevel = ({level}: Props) => (
+const BreadcrumbLevel = ({level, size}: Props) => (
   <div>
-    <BreadcrumbLevelTag level={level} />
+    <BreadcrumbLevelTag level={level} size={size} />
   </div>
 );
 

@@ -8,6 +8,7 @@ import {t} from 'app/locale';
 import {Event} from 'app/types';
 import space from 'app/styles/space';
 import SearchBar from 'app/components/searchBar';
+import {defined} from 'app/utils';
 
 import {
   Breadcrumb,
@@ -17,10 +18,12 @@ import {
 } from '../breadcrumbs/types';
 import BreadcrumbFilter from './breadcrumbFilter/breadcrumbFilter';
 import convertBreadcrumbType from './convertBreadcrumbType';
-import getBreadcrumbDetails from './getBreadcrumbDetails';
+import getBreadcrumbTypeDetails from './getBreadcrumbTypeDetails';
 import {FilterGroupType} from './breadcrumbFilter/types';
 import BreadcrumbsListHeader from './breadcrumbsListHeader';
 import BreadcrumbsListBody from './breadcrumbsListBody';
+import BreadcrumbIcon from './breadcrumbIcon';
+import BreadcrumbLevel from './breadcrumbLevel';
 
 const MAX_CRUMBS_WHEN_COLLAPSED = 10;
 
@@ -76,30 +79,41 @@ class BreadcrumbsContainer extends React.Component<Props, State> {
 
     const convertedBreadcrumbs = breadcrumbs.map((breadcrumb, index) => {
       const convertedBreadcrumb = convertBreadcrumbType(breadcrumb);
-      const breadcrumbDetails = getBreadcrumbDetails(convertedBreadcrumb.type);
+      const breadcrumbTypeDetails = getBreadcrumbTypeDetails(convertedBreadcrumb.type);
 
       if (!breadcrumbTypes.find(b => b.type === convertedBreadcrumb.type)) {
         !breadcrumbTypes.push({
           groupType: FilterGroupType.TYPE,
           type: convertedBreadcrumb.type,
-          ...breadcrumbDetails,
-          isChecked: true,
+          description: breadcrumbTypeDetails.description,
+          symbol: (
+            <BreadcrumbIcon
+              icon={breadcrumbTypeDetails.icon}
+              color={breadcrumbTypeDetails.color}
+              borderColor={breadcrumbTypeDetails.borderColor}
+              size="xs"
+            />
+          ),
+          isChecked: false,
         });
       }
 
-      if (!breadcrumbLevels.find(b => b.type === convertedBreadcrumb.type)) {
-        !breadcrumbTypes.push({
-          groupType: FilterGroupType.TYPE,
-          type: convertedBreadcrumb.type,
-          ...breadcrumbDetails,
-          isChecked: true,
+      if (
+        !!convertedBreadcrumb?.level &&
+        !breadcrumbLevels.find(b => b.type === convertedBreadcrumb?.level)
+      ) {
+        !breadcrumbLevels.push({
+          groupType: FilterGroupType.LEVEL,
+          type: convertedBreadcrumb.level,
+          symbol: <BreadcrumbLevel level={convertedBreadcrumb.level} size="xs" />,
+          isChecked: false,
         });
       }
 
       return {
         id: index,
         ...convertedBreadcrumb,
-        ...breadcrumbDetails,
+        ...breadcrumbTypeDetails,
       };
     });
 
@@ -187,26 +201,51 @@ class BreadcrumbsContainer extends React.Component<Props, State> {
   };
 
   handleFilter = (breadcrumbFilterGroups: BreadcrumbFilterGroups) => () => {
-    //types
-    const breadcrumbFilterGroupTypes = breadcrumbFilterGroups.filter(
-      breadcrumbFilterGroup => breadcrumbFilterGroup.groupType === 'type'
-    );
+    if (
+      breadcrumbFilterGroups.every(
+        breadcrumbFilterGroup => breadcrumbFilterGroup.isChecked === false
+      )
+    ) {
+      this.setState(prevState => ({
+        filteredBreadcrumbs: prevState.breadcrumbs,
+        breadcrumbFilterGroups,
+      }));
+      return;
+    }
 
-    // TODO(Priscila): implement levels
-    // const breadcrumbFilterGroupLevels = breadcrumbFilterGroups
-    //   .filter(breadcrumbFilterGroup => breadcrumbFilterGroup.groupType === 'level')
-    //   .map(breadcrumbFilterGroup => breadcrumbFilterGroup.type);
+    //types
+    const breadcrumbFilterGroupTypes = breadcrumbFilterGroups
+      .filter(
+        breadcrumbFilterGroup =>
+          breadcrumbFilterGroup.groupType === 'type' && breadcrumbFilterGroup.isChecked
+      )
+      .map(breadcrumbFilterGroup => breadcrumbFilterGroup.type);
+
+    //levels
+    const breadcrumbFilterGroupLevels = breadcrumbFilterGroups
+      .filter(
+        breadcrumbFilterGroup =>
+          breadcrumbFilterGroup.groupType === 'level' && breadcrumbFilterGroup.isChecked
+      )
+      .map(breadcrumbFilterGroup => breadcrumbFilterGroup.type);
 
     this.setState({
-      filteredBreadcrumbs: this.state.breadcrumbs.filter(breadcrumb => {
-        const foundBreadcrumbFilterData = breadcrumbFilterGroupTypes.find(
-          crumbFilterData => crumbFilterData.type === breadcrumb.type
-        );
-        if (foundBreadcrumbFilterData) {
-          return foundBreadcrumbFilterData.isChecked;
+      filteredBreadcrumbs: this.state.breadcrumbs.filter(({type, level}) => {
+        if (
+          breadcrumbFilterGroupLevels.length > 0 &&
+          breadcrumbFilterGroupTypes.length > 0
+        ) {
+          return (
+            breadcrumbFilterGroupTypes.includes(type) &&
+            defined(level) &&
+            breadcrumbFilterGroupLevels.includes(level)
+          );
+        }
+        if (breadcrumbFilterGroupLevels.length > 0) {
+          return defined(level) && breadcrumbFilterGroupLevels.includes(level);
         }
 
-        return false;
+        return breadcrumbFilterGroupTypes.includes(type);
       }),
       breadcrumbFilterGroups,
     });
