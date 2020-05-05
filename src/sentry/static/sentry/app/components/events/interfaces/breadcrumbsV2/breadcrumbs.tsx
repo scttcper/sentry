@@ -3,11 +3,12 @@ import styled from '@emotion/styled';
 
 import EventDataSection from 'app/components/events/eventDataSection';
 import GuideAnchor from 'app/components/assistant/guideAnchor';
-import EmptyStateWarning from 'app/components/emptyStateWarning';
+import EmptyMessage from 'app/views/settings/components/emptyMessage';
 import {t} from 'app/locale';
 import {Event} from 'app/types';
 import space from 'app/styles/space';
 import SearchBar from 'app/components/searchBar';
+import Button from 'app/components/button';
 import {defined} from 'app/utils';
 
 import {
@@ -297,14 +298,12 @@ class BreadcrumbsContainer extends React.Component<Props, State> {
 
   render() {
     const {type} = this.props;
-    const {breadcrumbFilterGroups, searchTerm, filteredBreadcrumbsByFilter} = this.state;
+    const {breadcrumbFilterGroups, searchTerm} = this.state;
 
     const {
       collapsedQuantity,
       filteredCollapsedBreadcrumbs,
     } = this.getCollapsedCrumbQuantity();
-
-    console.log('filteredBreadcrumbsByFilter', filteredBreadcrumbsByFilter);
 
     return (
       <EventDataSection
@@ -343,9 +342,12 @@ class BreadcrumbsContainer extends React.Component<Props, State> {
               />
             </BreadcrumbList>
           ) : (
-            <EmptyStateWarning small>
-              {t('Sorry, no breadcrumbs match your search query.')}
-            </EmptyStateWarning>
+            <EmptyMessage>
+              <div> {t('Sorry, no breadcrumbs match your search query.')}</div>
+              <Button onClick={() => console.log('test')} priority="primary" size="small">
+                {t('Clear Filter')}
+              </Button>
+            </EmptyMessage>
           )}
         </Content>
       </EventDataSection>
